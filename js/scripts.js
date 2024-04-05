@@ -60,3 +60,25 @@
     },
   });
 })();
+
+function game(){
+  //Game State
+  let isPlaying = true
+  // Player Data
+  const Player = function(name, sign, score){
+    return {name, sign,score}
+  }
+  const player1 = new Player(prompt("Please enter a name for PLAYER 1:", ""), "X", 0)
+  const player2 = new Player(prompt("Please enter a name for PLAYER 2:", ""), "O", 0)
+  let currentPlayer = ""
+
+  // Game Logic Functions
+
+  // Main Game Loop
+  while(isPlaying){
+
+  }
+}
+
+board.render()
+game()
