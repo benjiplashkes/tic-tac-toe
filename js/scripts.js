@@ -46,15 +46,18 @@ const board = (function() {
    * @returns {void}
    */
   const addMove = (row, column, sign) => {
-    if(!data[row][column] === 0 || !data[row][column] === "0") throw `cell not empty ${data[row][column]}`
-    data[row][column] = sign;
+    if(data[row][column] === "X" || data[row][column] === "O") throw "Cell Not Empty"
+    if(data[row][column] == 0 ) {
+      data[row][column] = sign
+    }
   };
-  const resetBoard = () => {
-    data = [
-      [[0], [0], [0]],
-      [[0], [0], [0]],
-      [[0], [0], [0]],
-    ];
+  const reset = () => {
+    for(row of data){
+      for(cell of row){
+        row[cell] = 0
+      }
+    }
+
   }
   const log = () => {
     console.log(`
@@ -76,7 +79,7 @@ const board = (function() {
     }
   };
 
-  return ( {getRows, getColumns, getDiagonals, addMove, resetBoard, log, render} );
+  return ( {getRows, getColumns, getDiagonals, addMove, reset, log, render} );
 })()
 
 function game() {
@@ -124,6 +127,7 @@ function game() {
     if (!sign === "X" || !sign === "O") {
       throw "Error: wrong sign entered";
     }
+
     board.addMove(row, cell, sign);
   };
   const getMove = () => {
@@ -144,12 +148,12 @@ function game() {
    * @param {Player} player
    * @returns {void}
    */
-  const endGame = (state, player) => {
+  const endGame = () => {
     if (gameState === "win") {
       console.clear();
       board.render();
       console.log(`
-        Player ${player.name} "${player.sign}" WINS !!!
+        Player ${currentPlayer.name} "${currentPlayer.sign}" WINS !!!
         *************************
       `);
       player.score++;
@@ -167,6 +171,8 @@ function game() {
     if (!gameState === "Playing") {
       isPlaying = false;
     }
+    board.resetBoard()
+
   };
 
   /**
@@ -222,7 +228,7 @@ function game() {
     if (
       checkEndGame(boardState.rows, boardState.columns, boardState.diagonals)
     ) {
-      endGame(gameState, currentPlayer);
+      endGame();
       break;
     }
     board.render();
@@ -233,6 +239,6 @@ function game() {
     }
   }
 }
-board.resetBoard()
+board.reset()
 board.render();
 game();
