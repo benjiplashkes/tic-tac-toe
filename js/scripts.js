@@ -156,7 +156,7 @@ function game() {
         Player ${currentPlayer.name} "${currentPlayer.sign}" WINS !!!
         *************************
       `);
-      player.score++;
+      currentPlayer.score++;
       isPlaying = false;
     }
     if (gameState === "tie") {
