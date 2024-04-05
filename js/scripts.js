@@ -1,71 +1,96 @@
-(function boardFactory() {
-  data = [
+const board = (function() {
+
+  const data = [
     [[0], [0], [0]],
     [[0], [0], [0]],
     [[0], [0], [0]],
   ];
-  return (board = {
-    getRows: () => {
-      let rows = "";
-      for (const row of data) {
-        rows += row.join("");
-      }
-      return rows;
-    },
-    getColumns: () => {
-      let col1 = "";
-      let col2 = "";
-      let col3 = "";
+  const getRows = () => {
+    let rows = "";
+    for (const row of data) {
+      rows += row.join("");
+    }
+    return rows;
+  };
+  const getColumns = () => {
+    let col1 = "";
+    let col2 = "";
+    let col3 = "";
 
-      for (const row of data) {
-        col1 += row[0];
-        col2 += row[1];
-        col3 += row[2];
-      }
-      return col1 + col2 + col3;
-    },
-    getDiagonals: () => {
-      let diag1 = "";
-      let diag2 = "";
-      for (let index = 0; index < data.length; index++) {
-        let reverseIndex = data.length - 1;
-        const row = data[index];
-        diag1 += row[index];
-        diag2 += row[reverseIndex];
-        reverseIndex--;
-      }
-      return diag1 + diag2;
-    },
-    addMove: (row, column, sign) => {
-      data[row][column] = sign;
-    },
-    log: () => {
-      console.log(`
+    for (const row of data) {
+      col1 += row[0];
+      col2 += row[1];
+      col3 += row[2];
+    }
+    return col1 + col2 + col3;
+  };
+  const getDiagonals = () => {
+    let diag1 = "";
+    let diag2 = "";
+    for (let index = 0; index < data.length; index++) {
+      let reverseIndex = data.length - 1;
+      const row = data[index];
+      diag1 += row[index];
+      diag2 += row[reverseIndex];
+      reverseIndex--;
+    }
+    return diag1 + diag2;
+  };
+  
+  
+  /**
+   * Description
+   * @param {number} row
+   * @param {number} column
+   * @param {string} sign
+   * @returns {void}
+   */
+  const addMove = (row, column, sign) => {
+    if(!data[row][column] === 0 || !data[row][column] === "0") throw `cell not empty ${data[row][column]}`
+    data[row][column] = sign;
+  };
+  const resetBoard = () => {
+    data = [
+      [[0], [0], [0]],
+      [[0], [0], [0]],
+      [[0], [0], [0]],
+    ];
+  }
+  const log = () => {
+    console.log(`
       Rows:       ${board.getRows()}
       Columns:    ${board.getColumns()}
       Diagonals:  ${board.getDiagonals()}
 
       `);
-    },
+  };
 
-    render: () => {
-      console.clear();
+  const render = () => {
+    console.clear();
+    console.log("-------------");
+
+    for (let index = 0; index < data.length; index++) {
+      const row = data[index];
+      console.log("| " + row.join(" | ") + " |");
       console.log("-------------");
+    }
+  };
 
-      for (let index = 0; index < data.length; index++) {
-        const row = data[index];
-        console.log("| " + row.join(" | ") + " |");
-        console.log("-------------");
-      }
-    },
-  });
-})();
+  return ( {getRows, getColumns, getDiagonals, addMove, resetBoard, log, render} );
+})()
 
 function game() {
   //Game State
   let gameState = "Playing";
   let isPlaying = gameState === "Playing" ? true : false;
   // Player Data
+  /**
+   * Description
+   * @param {String} name
+   * @param {String} sign
+   * @param {Number} score
+   * @returns {Object}
+   */
   const Player = function (name, sign, score) {
     return { name, sign, score };
   };
@@ -79,9 +104,16 @@ function game() {
     "O",
     0
   );
-  let currentPlayer = null;
+  let currentPlayer = player1;
 
   // Game Logic Functions
+  /**
+   * Description
+   * @param {Number} row
+   * @param {Number} cell
+   * @param {"X" || "O"} sign
+   * @returns {void}
+   */
   const makeMove = (row, cell, sign) => {
     if (row > 2 || row < 0) {
       throw "Cannot make move - Invalid row input";
@@ -89,22 +121,29 @@ function game() {
     if (cell > 2 || cell < 0) {
       throw "Cannot make move - Invalid cell input";
     }
-    if (sign !== "X" || sign !== "O") {
+    if (!sign === "X" || !sign === "O") {
       throw "Error: wrong sign entered";
     }
-    return board.addMove(row, cell, sign);
+    board.addMove(row, cell, sign);
   };
   const getMove = () => {
     const row = Number(prompt(`${currentPlayer.name} select row:`));
-    const col = Number(prompt(`${currentPlayer.name} select column:`));
-    if (!row && !col) {
-      getMove();
-    }
-    if(row < 0 || row > 2 || !row.isNAN()) return getMove()
-    if(col < 0 || col > 2 || !col.isNAN()) return getMove()
+    const column = Number(prompt(`${currentPlayer.name} select column:`));
 
-    return `${row}, ${col}`;
+    if (row > 2 || row < 0) {
+      throw "getMove() - wrong row size ";
+    }
+    if (column > 2 || column < 0) {
+      throw "getMove() - wrong column size";
+    }
+    return { row, column: column };
   };
+  /**
+   * Description
+   * @param {"win" || "tie" || "Playing"} state
+   * @param {Player} player
+   * @returns {void}
+   */
   const endGame = (state, player) => {
     if (gameState === "win") {
       console.clear();
@@ -114,6 +153,7 @@ function game() {
         *************************
       `);
       player.score++;
+      isPlaying = false;
     }
     if (gameState === "tie") {
       console.clear();
@@ -122,14 +162,22 @@ function game() {
       GAME OVER !!!
       the game is tied
       `);
+      isPlaying = false;
     }
     if (!gameState === "Playing") {
       isPlaying = false;
     }
   };
 
+  /**
+   * Description
+   * @param {String} rows
+   * @param {String} cell
+   * @param {String} diagonals
+   * @returns {Boolean}
+   */
   const checkEndGame = (rows, cell, diagonals) => {
-    const checkWin = (rows, cell, diagonals) => {
+    const checkWin = () => {
       if (rows.includes("XXX") || rows.includes("OOO")) {
         return true;
       }
@@ -141,18 +189,18 @@ function game() {
       }
       return false;
     };
-    const checkTie = (rows) => {
-      if (!rows.includes("0")) {
-        return true;
+    const checkTie = () => {
+      if (!checkWin() && rows.includes("0")) {
+        return false;
       }
-      return false;
+      return true;
     };
 
-    if (checkWin(rows, cell.diaonals) === true) {
+    if (checkWin() === true) {
       gameState = "win";
       return true;
     }
-    if (checkTie(rows) === true) {
+    if (checkTie() === true) {
       gameState = "tie";
       return true;
     }
@@ -164,21 +212,27 @@ function game() {
     if (!currentPlayer) {
       currentPlayer = player1;
     }
-
-    makeMove(getMove());
+    const move = getMove();
+    makeMove(move.row, move.column, currentPlayer.sign);
+    const boardState = {
+      rows: board.getRows(),
+      columns: board.getColumns(),
+      diagonals: board.getDiagonals(),
+    };
     if (
-      checkEndGame(board.getRows(), board.getColumns(), board.getDiagonals())
+      checkEndGame(boardState.rows, boardState.columns, boardState.diagonals)
     ) {
       endGame(gameState, currentPlayer);
       break;
     }
-
-    if (currentPlayer === player1) {
-      currentPlayer = player2;
-    } else {
+    board.render();
+    if (currentPlayer === player2) {
       currentPlayer = player1;
+    } else {
+      currentPlayer = player2;
     }
   }
 }
+board.resetBoard()
 board.render();
 game();
