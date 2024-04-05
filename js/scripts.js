@@ -73,10 +73,50 @@ function game(){
   let currentPlayer = ""
 
   // Game Logic Functions
+  const makeMove = (row, cell, sign)=>{
+    if(row > 2 || row < 0) {
+      throw ("Cannot make move - Invalid row input")
+    }
+    if(cell > 2 || cell < 0){
+      throw ("Cannot make move - Invalid cell input")
+    }
+    if(sign !== "X" || sign !== "O"){
+      throw ("Error: wrong sign entered")
+    }
+
+    if()
+  }
+
+  const endGame = (state, player) => {
+    if(state === "win"){
+      console.clear()
+      board.render()
+      console.log(`
+        Player ${player.name} "${player.sign}" WINS !!!
+        *************************
+      `)
+      isPlaying = false
+      player.score ++
+    }
+    if(state === "tie"){
+      console.clear()
+      board.render()
+      console.log(`
+      GAME OVER !!!
+      the game is tied
+      `)
+    }
+  }
+  }
+  const checkMove = (row, cell, diagonals) => {
+    const checkWin = (row, cell, diagonals) => {}
+    const checkTie = (cell) => {}
+
+  }
 
   // Main Game Loop
   while(isPlaying){
-
+    
   }
 }
 
