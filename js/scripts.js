@@ -100,6 +100,9 @@ function game() {
     if (!row && !col) {
       getMove();
     }
+    if(row < 0 || row > 2 || !row.isNAN()) return getMove()
+    if(col < 0 || col > 2 || !col.isNAN()) return getMove()
+
     return `${row}, ${col}`;
   };
   const endGame = (state, player) => {
