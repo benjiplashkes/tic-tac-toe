@@ -95,8 +95,8 @@ function game() {
     return board.addMove(row, cell, sign);
   };
   const getMove = () => {
-    const row = Number(prompt(`${currentPlayer} select row:`));
-    const col = Number(prompt(`${currentPlayer} select column:`));
+    const row = Number(prompt(`${currentPlayer.name} select row:`));
+    const col = Number(prompt(`${currentPlayer.name} select column:`));
     if (!row && !col) {
       getMove();
     }
