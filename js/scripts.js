@@ -95,13 +95,13 @@ function game() {
     return board.addMove(row, cell, sign);
   };
   const getMove = () => {
-    const row = Number(prompt(`${currentPlayer} select row:`))
-    const col = Number(prompt(`${currentPlayer} select column:`))
-    if(!row && !col){
-      getMove()
+    const row = Number(prompt(`${currentPlayer} select row:`));
+    const col = Number(prompt(`${currentPlayer} select column:`));
+    if (!row && !col) {
+      getMove();
     }
-    return `${row}, ${col}`
-  }
+    return `${row}, ${col}`;
+  };
   const endGame = (state, player) => {
     if (gameState === "win") {
       console.clear();
@@ -124,56 +124,58 @@ function game() {
       isPlaying = false;
     }
   };
-}
-const checkEndGame = (rows, cell, diagonals) => {
-  const checkWin = (rows, cell, diagonals) => {
-    if (rows.includes("XXX") || rows.includes("OOO")) {
+
+  const checkEndGame = (rows, cell, diagonals) => {
+    const checkWin = (rows, cell, diagonals) => {
+      if (rows.includes("XXX") || rows.includes("OOO")) {
+        return true;
+      }
+      if (cell.includes("XXX") || cell.includes("OOO")) {
+        return true;
+      }
+      if (diagonals.includes("XXX") || diagonals.includes("OOO")) {
+        return true;
+      }
+      return false;
+    };
+    const checkTie = (rows) => {
+      if (!rows.includes("0")) {
+        return true;
+      }
+      return false;
+    };
+
+    if (checkWin(rows, cell.diaonals) === true) {
+      gameState = "win";
       return true;
     }
-    if (cell.includes("XXX") || cell.includes("OOO")) {
-      return true;
-    }
-    if (diagonals.includes("XXX") || diagonals.includes("OOO")) {
+    if (checkTie(rows) === true) {
+      gameState = "tie";
       return true;
     }
     return false;
   };
-  const checkTie = (rows) => {
-    if (!rows.includes("0")) {
-      return true;
+
+  // Main Game Loop
+  while (isPlaying === true) {
+    if (!currentPlayer) {
+      currentPlayer = player1;
     }
-    return false;
-  };
 
-  if (checkWin(rows, cell.diaonals) === true) {
-    gameState = "win";
-    return true;
-  }
-  if (checkTie(rows) === true) {
-    gameState = "tie";
-    return true;
-  }
-  return false;
-};
+    makeMove(getMove());
+    if (
+      checkEndGame(board.getRows(), board.getColumns(), board.getDiagonals())
+    ) {
+      endGame(gameState, currentPlayer);
+      break;
+    }
 
-// Main Game Loop
-while (isPlaying === true) {
-  if (!currentPlayer) {
-    currentPlayer = player1;
-  }
-
-  makeMove(getMove());
-  if (checkEndGame(board.getRows(), board.getColumns(), board.getDiagonals())) {
-    endGame(gameState, currentPlayer);
-    break;
-  }
-
-  if (currentPlayer === player1) {
-    currentPlayer = player2;
-  } else {
-    currentPlayer = player1;
+    if (currentPlayer === player1) {
+      currentPlayer = player2;
+    } else {
+      currentPlayer = player1;
+    }
   }
 }
-
 board.render();
 game();
