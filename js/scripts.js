@@ -61,90 +61,119 @@
   });
 })();
 
-function game(){
+function game() {
   //Game State
-  let isPlaying = true
+  let gameState = "Playing";
+  let isPlaying = gameState === "Playing" ? true : false;
   // Player Data
-  const Player = function(name, sign, score){
-    return {name, sign,score}
-  }
-  const player1 = new Player(prompt("Please enter a name for PLAYER 1:", ""), "X", 0)
-  const player2 = new Player(prompt("Please enter a name for PLAYER 2:", ""), "O", 0)
-  let currentPlayer = ""
+  const Player = function (name, sign, score) {
+    return { name, sign, score };
+  };
+  const player1 = new Player(
+    prompt("Please enter a name for PLAYER 1:", ""),
+    "X",
+    0
+  );
+  const player2 = new Player(
+    prompt("Please enter a name for PLAYER 2:", ""),
+    "O",
+    0
+  );
+  let currentPlayer = null;
 
   // Game Logic Functions
-  const makeMove = (row, cell, sign)=>{
-    if(row > 2 || row < 0) {
-      throw ("Cannot make move - Invalid row input")
+  const makeMove = (row, cell, sign) => {
+    if (row > 2 || row < 0) {
+      throw "Cannot make move - Invalid row input";
     }
-    if(cell > 2 || cell < 0){
-      throw ("Cannot make move - Invalid cell input")
+    if (cell > 2 || cell < 0) {
+      throw "Cannot make move - Invalid cell input";
     }
-    if(sign !== "X" || sign !== "O"){
-      throw ("Error: wrong sign entered")
+    if (sign !== "X" || sign !== "O") {
+      throw "Error: wrong sign entered";
     }
-
-    if()
+    return board.addMove(row, cell, sign);
+  };
+  const getMove = () => {
+    const row = Number(prompt(`${currentPlayer} select row:`))
+    const col = Number(prompt(`${currentPlayer} select column:`))
+    if(!row && !col){
+      getMove()
+    }
+    return `${row}, ${col}`
   }
-
   const endGame = (state, player) => {
-    if(state === "win"){
-      console.clear()
-      board.render()
+    if (gameState === "win") {
+      console.clear();
+      board.render();
       console.log(`
         Player ${player.name} "${player.sign}" WINS !!!
         *************************
-      `)
-      isPlaying = false
-      player.score ++
+      `);
+      player.score++;
     }
-    if(state === "tie"){
-      console.clear()
-      board.render()
+    if (gameState === "tie") {
+      console.clear();
+      board.render();
       console.log(`
       GAME OVER !!!
       the game is tied
-      `)
-      
+      `);
     }
+    if (!gameState === "Playing") {
+      isPlaying = false;
+    }
+  };
+}
+const checkEndGame = (rows, cell, diagonals) => {
+  const checkWin = (rows, cell, diagonals) => {
+    if (rows.includes("XXX") || rows.includes("OOO")) {
+      return true;
+    }
+    if (cell.includes("XXX") || cell.includes("OOO")) {
+      return true;
+    }
+    if (diagonals.includes("XXX") || diagonals.includes("OOO")) {
+      return true;
+    }
+    return false;
+  };
+  const checkTie = (rows) => {
+    if (!rows.includes("0")) {
+      return true;
+    }
+    return false;
+  };
+
+  if (checkWin(rows, cell.diaonals) === true) {
+    gameState = "win";
+    return true;
   }
+  if (checkTie(rows) === true) {
+    gameState = "tie";
+    return true;
   }
-  const checkEndGame = (rows, cell, diagonals) => {
-    
-    const checkWin = (rows, cell, diagonals) => {
-      if(rows.includes("XXX") || rows.includes("OOO")){
-        return true
-      }
-      if(cell.includes("XXX") || cell.includes("OOO")){
-        return true
-      }
-      if(diagonals.includes("XXX") || diagonals.includes("OOO")){
-        return true
-      }
-      return false
-    }
-    const checkTie = (rows) => {
-      if(!rows.includes('0')){
-        return true
-      }
-      return false
-    }
+  return false;
+};
 
-
-    if(checkWin(rows,cell.diaonals) === true){
-      return true    
-    }
-    if(checkTie(rows) === true){
-      return true
-    }
-    return false
+// Main Game Loop
+while (isPlaying === true) {
+  if (!currentPlayer) {
+    currentPlayer = player1;
   }
 
-  // Main Game Loop
-  while(isPlaying){
-    
+  makeMove(getMove());
+  if (checkEndGame(board.getRows(), board.getColumns(), board.getDiagonals())) {
+    endGame(gameState, currentPlayer);
+    break;
   }
 
+  if (currentPlayer === player1) {
+    currentPlayer = player2;
+  } else {
+    currentPlayer = player1;
+  }
+}
 
-board.render()
-game()
+board.render();
+game();
