@@ -105,20 +105,46 @@ function game(){
       GAME OVER !!!
       the game is tied
       `)
+      
     }
   }
   }
-  const checkMove = (row, cell, diagonals) => {
-    const checkWin = (row, cell, diagonals) => {}
-    const checkTie = (cell) => {}
+  const checkEndGame = (rows, cell, diagonals) => {
+    
+    const checkWin = (rows, cell, diagonals) => {
+      if(rows.includes("XXX") || rows.includes("OOO")){
+        return true
+      }
+      if(cell.includes("XXX") || cell.includes("OOO")){
+        return true
+      }
+      if(diagonals.includes("XXX") || diagonals.includes("OOO")){
+        return true
+      }
+      return false
+    }
+    const checkTie = (rows) => {
+      if(!rows.includes('0')){
+        return true
+      }
+      return false
+    }
 
+
+    if(checkWin(rows,cell.diaonals) === true){
+      return true    
+    }
+    if(checkTie(rows) === true){
+      return true
+    }
+    return false
   }
 
   // Main Game Loop
   while(isPlaying){
     
   }
-}
+
 
 board.render()
 game()
