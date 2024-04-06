@@ -239,6 +239,6 @@ function game() {
     }
   }
 }
-board.reset()
-board.render();
-game();
+// board.reset()
+// board.render();
+// game();
