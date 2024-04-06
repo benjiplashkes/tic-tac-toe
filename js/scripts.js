@@ -1,3 +1,4 @@
+
 const board = (function() {
 
   const data = [
@@ -86,6 +87,7 @@ function game() {
   //Game State
   let gameState = "Playing";
   let isPlaying = gameState === "Playing" ? true : false;
+  
   // Player Data
   /**
    * Description
@@ -97,6 +99,8 @@ function game() {
   const Player = function (name, sign, score) {
     return { name, sign, score };
   };
+
+  
   const player1 = new Player(
     prompt("Please enter a name for PLAYER 1:", ""),
     "X",
@@ -108,6 +112,7 @@ function game() {
     0
   );
   let currentPlayer = player1;
+
 
   // Game Logic Functions
   /**
@@ -131,8 +136,8 @@ function game() {
     board.addMove(row, cell, sign);
   };
   const getMove = () => {
-    const row = Number(prompt(`${currentPlayer.name} select row:`));
-    const column = Number(prompt(`${currentPlayer.name} select column:`));
+    // const row = Number(prompt(`${currentPlayer.name} select row:`));
+    // const column = Number(prompt(`${currentPlayer.name} select column:`));
 
     if (row > 2 || row < 0) {
       throw "getMove() - wrong row size ";
@@ -237,8 +242,43 @@ function game() {
     } else {
       currentPlayer = player2;
     }
+  
   }
+  
 }
-// board.reset()
-// board.render();
+
+(function userInterface(){
+  const elements = ( ()=> {
+    return {
+      newGame: document.querySelector('#newGame'),
+      player1: {
+        nameInput: document.querySelector('#playerName1'),
+        signSelect: document.querySelector('#playerSign1'),
+        scoreSpan: document.querySelector('#playerScore1')
+      },
+      player2: {
+        nameInput: document.querySelector('#playerName2'),
+        signSelect: document.querySelector('#playerSign2'),
+        scoreSpan: document.querySelector('#playerScore2')
+      },
+      cells: document.querySelectorAll('.cell'),
+      cellsX: document.querySelectorAll('[data-sign="X"]'),
+      cellsO: document.querySelectorAll('[data-sign="O"]'),
+      resultDialog: document.querySelector('dialog#gameResult')
+    }
+  })()
+
+
+  // Event Handlers
+  const handleCellClick = (e) => {
+    let element = e.target
+    const row = element.dataset.row
+    const column = element.dataset.cell
+    
+    
+  }
+  // Event Listeners
+  elements.cells.forEach(cell => cell.addEventListener("click", handleCellClick))
+})()
+
 // game();
