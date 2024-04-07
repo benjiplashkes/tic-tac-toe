@@ -54,14 +54,14 @@ body {
   grid-area: main;
   background-color: var(--color-bg);
   width: 100%;
-  min-height: 60svh;
+  /* min-height: 60svh; */
 }
 .sidebar {
   grid-area: sidebar;
   font-size: 1.2rem;
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 5rem 1fr 1fr 5fr;
+  grid-template-rows: 5rem 1fr 1fr 1fr 4fr;
   gap: calc(var(--space-xl) * 2);
 }
 .button {
@@ -81,6 +81,16 @@ body {
   background-color: hsl(var(--hue), var(--saturation), 15%);
   color: hsl(var(--hue), var(--saturation), 95%);
   font-weight: 600;
+}
+button:disabled, .button:hover:disabled{
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  color: gray;
+  font-weight: inherit;
+  font-size: inherit;
+  box-shadow: var(--box-shadow-light);
+
+
 }
 .input-container {
   display: grid;
@@ -142,12 +152,12 @@ body {
   background-size: contain;
   transition: all 150ms;
 }
-.cell[data-sign="x"],
+
 .cell[data-sign="X"] {
   background-image: url(../assets/images/circle-xmark-svgrepo-com.svg);
   background-color: hsl(var(--hue), 50%, 40%);
 }
-.cell[data-sign="o"],
+
 .cell[data-sign="O"] {
   background-image: url(../assets/images/circle-svgrepo-com.svg);
   background-color: hsl(var(--hue), 50%, 40%);
@@ -160,4 +170,17 @@ body {
 .cell:hover:not([data-sign]),
 .cell:focus:not([data-sign]) {
   background-color: hsl(var(--hue), var(--saturation), 40%);
+}
+
+.cell.disabled{
+  --disabled: hsl(var(--hue), var(--saturation), 75%);
+  background-color: var(--disabled);
+  box-shadow: initial;
+  border: none;
+}
+
+.cell.disabled:hover, .cell.disabled:focus{
+  background-color: var(--disabled);
+
+  border: inherit;
 }

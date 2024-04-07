@@ -14,17 +14,17 @@
     </header>
     <main class="main">
       <div class="game-wrapper">
-        <div class="cell" data-cell="1" data-row="1" data-sign="X"></div>
-        <div class="cell" data-cell="2" data-row="1" data-sign="O"></div>
-        <div class="cell" data-cell="3" data-row="1"></div>
+        <div class="cell" data-cell="0" data-row="0" ></div>
+        <div class="cell" data-cell="1" data-row="0" ></div>
+        <div class="cell" data-cell="2" data-row="0"></div>
 
+        <div class="cell" data-cell="0" data-row="1"></div>
+        <div class="cell" data-cell="1" data-row="1"></div>
+        <div class="cell" data-cell="2" data-row="1"></div>
+
+        <div class="cell" data-cell="0" data-row="2"></div>
         <div class="cell" data-cell="1" data-row="2"></div>
         <div class="cell" data-cell="2" data-row="2"></div>
-        <div class="cell" data-cell="3" data-row="2"></div>
-
-        <div class="cell" data-cell="1" data-row="3"></div>
-        <div class="cell" data-cell="2" data-row="3"></div>
-        <div class="cell" data-cell="3" data-row="3"></div>
       </div>
     </main>
     <aside class="sidebar">
@@ -38,10 +38,11 @@
             id="playerName1"
             name="player1"
             class="playerNameInput"
+            disabled
             required
           />
         </div>
-        <select name="playerSign1" id="playerSign1" class="playerSign" required>
+        <select name="playerSign1" id="playerSign1" class="playerSign" required disabled>
           <option value="" disabled selected>-- Select sign: --</option>
           <option value="X">X</option>
           <option value="O">O</option>
@@ -58,10 +59,11 @@
             id="playerName2"
             name="player2"
             class="playerNameInput"
+            disabled
             required
           />
         </div>
-        <select name="playerSign1" id="playerSign2" class="playerSign" required>
+        <select name="playerSign1" id="playerSign2" class="playerSign" required disabled>
           <option value="" disabled selected>-- Select sign: --</option>
           <option value="X">X</option>
           <option value="O">O</option>
@@ -70,6 +72,7 @@
           Player 2 score: <span class="score" id="playerScore2">0</span>
         </p>
       </div>
+        <button class="button" id="startGame" disabled>Start Game</button>
     </aside>
     <dialog class="game-result" id="gameResult"></dialog>
   </body>
