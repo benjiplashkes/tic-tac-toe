@@ -169,22 +169,16 @@ const game = (function () {
   const endGame = () => {
     if (gameState === "win") {
       board.reset();
-      console.log(`
-        Player ${currentPlayer.name} "${currentPlayer.sign}" WINS !!!
-        *************************
-      `);
-      alert(`Player ${currentPlayer.name} ${currentPlayer.sign} WINS!!!`)
       currentPlayer.score++;
       isPlaying = false;
+      userInterface.endGame("win")
+
+
     }
     if (gameState === "tie") {
       board.reset();
-      console.log(`
-      GAME OVER !!!
-      the game is tied
-      `);
-      alert(`Game Over : Game is a tie!`)
       isPlaying = false;
+      userInterface.endGame("tie")
     }
     if (!gameState === "Playing") {
       isPlaying = false;
@@ -255,11 +249,15 @@ const userInterface = (() => {
         scoreSpan: document.querySelector("#playerScore2"),
       },
       cells: document.querySelectorAll(".cell"),
-      resultDialog: document.querySelector("dialog#gameResult"),
+      dialog: {
+        dialog: document.querySelector("#gameResult"),
+        heading: document.querySelector("#gameResult h1"),
+        content: document.querySelector("#gameResult p"),
+        button: document.querySelector("#gameResult button")
+      }
+      
     };
   })();
-  console.log(elements.player1)
-
   // Event Handlers
   const handleCellClick = (e) => {
     const element = e.target;
@@ -338,12 +336,30 @@ const userInterface = (() => {
       
     }
   }
+  const openDialog = ()=>{
+    elements.dialog.dialog.showModal()
+    elements.dialog.button.addEventListener("click", ()=>{
+      elements.dialog.dialog.close()
+    })
+  }
+  const endGame = (state) =>{
+    if(state === "tie"){
+      elements.dialog.heading.textContent = "Game Over"
+      elements.dialog.content.textContent = "the game is a tie"
+      openDialog()
+    } 
+    if(state === "win"){
+      openDialog()
+    }
+
+  }
 
   // Event Listeners
   elements.newGame.addEventListener("click", handleNewGame);
 
   return {
     reset,
+    endGame,
   }
 })();
 

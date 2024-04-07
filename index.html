@@ -74,6 +74,16 @@
       </div>
         <button class="button" id="startGame" disabled>Start Game</button>
     </aside>
-    <dialog class="game-result" id="gameResult"></dialog>
+    <dialog class="gameResult"  id="gameResult">
+      <div class="dialogContent" id="gameResultContent">
+        <form formmethod="dialog" >
+        <h1 class="dialogHeading"></h1>
+        <p class="dialogText"></p>
+          <button class="button" id="dialogCloseButton" type="submit" >
+            Close
+          </button>
+        </form>
+        </div>
+    </dialog>
   </body>
 </html>

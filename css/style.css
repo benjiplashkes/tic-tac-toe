@@ -184,3 +184,64 @@ button:disabled, .button:hover:disabled{
 
   border: inherit;
 }
+
+dialog.gameResult{
+  position: fixed;
+  width:70%;
+  height: 70%;
+  margin: auto;
+  inset:0px;
+  display:none;
+  place-content: center;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  background-color: var(--color-bg);
+
+}
+dialog.gameResult[open]{
+  display: grid;
+}
+
+
+.dialogContent{
+
+  width: 100%;
+  height: 100%;
+  padding: 4rem;
+  font-size:  4rem;
+  border-radius: var(--border-radius);
+
+}
+.dialogContent form{
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow-light);
+  display: flex;
+  flex-direction: column;
+  align-content: start;
+  padding: calc(var(--space-xl) *2);
+  min-width: 30dvw;
+  min-height: 30dvh;;
+  background-color: hsl(var(--hue), var(--saturation), 85%);
+  text-align: center;
+  text-transform: uppercase;
+}
+dialog.gameResult::backdrop{
+  background-color: rgba(0, 0, 0, 0.8);
+  position: fixed;
+  inset: 0;
+  width: 100lvw;
+  height: 100lvh;
+}
+
+dialog .dialogHeading{
+  font-weight: 900;
+  font-size: 150%;
+  margin-bottom: var(--space-xl);
+}
+dialog .dialogText{
+  font-size: 150%;
+  margin-bottom: auto;
+}
+dialog .button{
+  margin-bottom: var(--space-xl);
+}
