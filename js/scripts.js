@@ -9,7 +9,7 @@ const board = (function () {
     for (const row of data) {
       rows += row.join("") + ",";
     }
-    return rows;
+    return rows
   };
   const getColumns = () => {
     let col1 = "";
@@ -23,18 +23,12 @@ const board = (function () {
     }
     return `${col1}, ${col2},${col3}`
   };
+  const getDiag1 = () =>  `${data[0][0]}${data[1][1]}${data[2][2]}`
+  const getDiag2 = ()=> `${data[0][2]}${data[1][1]}${data[2][0]}`
+
   const getDiagonals = () => {
-    let diag1 = "";
-    let diag2 = "";
-    for (let index = 0; index < data.length; index++) {
-      let reverseIndex = data.length - 1;
-      const row = data[index];
-      diag1 += row[index];
-      diag2 += row[reverseIndex];
-      reverseIndex--;
-    }
-    return `${diag1}, ${diag2}`;
-  };
+    return `${getDiag1()},${getDiag2()}`.replaceAll("0", ".")
+  }
 
   /**
    * Description
@@ -51,22 +45,18 @@ const board = (function () {
     }
   };
   const reset = () => {
-    userInterface.reset()
-    return data = [
-      [
-        [0],[0],[0]
-      ],[
-        [0],[0],[0]
-      ],[
-        [0],[0],[0]
-      ]
-    ]
+    userInterface.reset();
+    return (data = [
+      [[0], [0], [0]],
+      [[0], [0], [0]],
+      [[0], [0], [0]],
+    ]);
   };
   const log = () => {
     console.log(`
-      Rows:       ${board.getRows()}
-      Columns:    ${board.getColumns()}
-      Diagonals:  ${board.getDiagonals()}
+      Rows:       ${board.getRows().replaceAll("0", "")}
+      Columns:    ${board.getColumns().replaceAll("0", "")}
+      Diagonals:  ${board.getDiagonals().replaceAll("0", "")}
 
       `);
   };
@@ -114,9 +104,9 @@ const game = (function () {
   };
   const setCurrentPlayer = () => {
     if (currentPlayer === player2) {
-      return currentPlayer = player1;
+      return (currentPlayer = player1);
     } else {
-      return currentPlayer = player2;
+      return (currentPlayer = player2);
     }
   };
 
@@ -157,7 +147,6 @@ const game = (function () {
       endGame();
       return;
     }
-    
   };
 
   /**
@@ -171,14 +160,12 @@ const game = (function () {
       board.reset();
       currentPlayer.score++;
       isPlaying = false;
-      userInterface.endGame("win")
-
-
+      userInterface.endGame("win");
     }
     if (gameState === "tie") {
       board.reset();
       isPlaying = false;
-      userInterface.endGame("tie")
+      userInterface.endGame("tie");
     }
     if (!gameState === "Playing") {
       isPlaying = false;
@@ -194,8 +181,8 @@ const game = (function () {
    */
   const checkEndGame = (rows, cell, diagonals) => {
     const checkWin = () => {
-      console.log(board.log())
-     
+      console.log(board.log());
+
       if (rows.includes("XXX") || rows.includes("OOO")) {
         return true;
       }
@@ -253,9 +240,9 @@ const userInterface = (() => {
         dialog: document.querySelector("#gameResult"),
         heading: document.querySelector("#gameResult h1"),
         content: document.querySelector("#gameResult p"),
-        button: document.querySelector("#gameResult button")
-      }
-      
+        button: document.querySelector("#gameResult button"),
+        winnerSign: document.querySelector('#gameResult form'),
+      },
     };
   })();
   // Event Handlers
@@ -301,7 +288,6 @@ const userInterface = (() => {
       playerName2 = elements.player2.nameInput.value;
     });
     elements.startGameButton.addEventListener("click", () => {
-
       elements.player1.signSelect.disabled = true;
       elements.player1.nameInput.disabled = true;
       elements.player2.nameInput.disabled = true;
@@ -316,43 +302,43 @@ const userInterface = (() => {
       );
     });
 
-    elements.cells.forEach((cell) =>{
-      cell.addEventListener("click", handleCellClick)
-      cell.classList.remove('disabled')
-
-    }
-    );
+    elements.cells.forEach((cell) => {
+      cell.addEventListener("click", handleCellClick);
+      cell.classList.remove("disabled");
+    });
   };
 
   // Utility functions
-  const reset = () =>{
+  const reset = () => {
     for (const cell of elements.cells) {
-      cell.dataset.sign = ""
-      cell.classList.add('disabled')
-      elements.player1.nameInput = ""
-      elements.player1.signSelect = ""
-      elements.player2.nameInput = ""
-
-      
+      cell.dataset.sign = "";
+      cell.classList.add("disabled");
+      elements.player1.nameInput = "";
+      elements.player1.signSelect = "";
+      elements.player2.nameInput = "";
     }
-  }
-  const openDialog = ()=>{
-    elements.dialog.dialog.showModal()
-    elements.dialog.button.addEventListener("click", ()=>{
-      elements.dialog.dialog.close()
-    })
-  }
-  const endGame = (state) =>{
-    if(state === "tie"){
-      elements.dialog.heading.textContent = "Game Over"
-      elements.dialog.content.textContent = "the game is a tie"
-      openDialog()
-    } 
-    if(state === "win"){
-      openDialog()
+  };
+  const openDialog = () => {
+    elements.dialog.dialog.showModal();
+    elements.dialog.button.addEventListener("click", (event) => {
+      event.preventDefault()
+      elements.dialog.dialog.close();
+    });
+  };
+  const endGame = (state) => {
+    if (state === "tie") {
+      elements.dialog.heading.textContent = "Game Over";
+      elements.dialog.content.textContent = "the game is a tie";
+      openDialog();
     }
-
-  }
+    if (state === "win") {
+      const player = game.getCurrentPlayer()
+      elements.dialog.heading.textContent = "Game Over";
+      elements.dialog.content.textContent = `Player ${player.name} Wins!!!`;
+      elements.dialog.winnerSign.dataset.winner = player.sign
+      openDialog();
+    }
+  };
 
   // Event Listeners
   elements.newGame.addEventListener("click", handleNewGame);
@@ -360,7 +346,7 @@ const userInterface = (() => {
   return {
     reset,
     endGame,
-  }
+  };
 })();
 
 // game();

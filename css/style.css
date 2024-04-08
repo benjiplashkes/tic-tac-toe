@@ -210,6 +210,7 @@ dialog.gameResult[open]{
   padding: 4rem;
   font-size:  4rem;
   border-radius: var(--border-radius);
+  position: relative;
 
 }
 .dialogContent form{
@@ -233,6 +234,7 @@ dialog.gameResult::backdrop{
   height: 100lvh;
 }
 
+
 dialog .dialogHeading{
   font-weight: 900;
   font-size: 150%;
@@ -244,4 +246,18 @@ dialog .dialogText{
 }
 dialog .button{
   margin-bottom: var(--space-xl);
+}
+
+
+[data-winner]{
+
+  background-position: center 60%;
+  background-repeat: no-repeat;
+  background-size: 20rem;
+}
+[data-winner="X"] {
+  background-image: url(../assets/images/circle-xmark-svgrepo-com.svg);
+}
+[data-winner="O"] {
+  background-image: url(../assets/images/circle-svgrepo-com.svg);
 }
